@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import org.springframework.hateoas.RepresentationModel;
 
-public class Transaction extends RepresentationModel<Transaction> {
+public class Transaction  {
 
 	private String accountNumber;
 	private String accountName;

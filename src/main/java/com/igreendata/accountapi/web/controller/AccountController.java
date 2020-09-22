@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.igreendata.accountapi.model.Account;
 import com.igreendata.accountapi.persistence.entity.AccountEntity;
-import com.igreendata.accountapi.persistence.repository.TransactionRepository;
 import com.igreendata.accountapi.service.impl.AccountService;
 import com.igreendata.accountapi.web.controller.exception.NotFoundException;
 
@@ -26,22 +27,26 @@ import com.igreendata.accountapi.web.controller.exception.NotFoundException;
 
 @RequestMapping("/account")
 public class AccountController {
+	private static final Logger log = LoggerFactory.getLogger(AccountController.class);
+
 
 	@Autowired
 	AccountService accountService;
-	@Autowired
-	TransactionRepository transactionRepository;
+	
 
 	@Autowired
 	private ModelMapper modelMapper;
 
 	@GetMapping
 	public ResponseEntity<List<Account>> getAllAccounts() {
+		log.info("get all accounts");
 		List<Account> accounts = new ArrayList<Account>();
 		List<AccountEntity> accountEntities = accountService.getAccountList();
+		log.info("get {} accounts",accountEntities.size());
 		if (isAccountsExist(accountEntities)) {
 			accounts = accountEntities.stream().map(this::convertToModel).collect(Collectors.toList());
 		} else {
+			log.info("no account available");
 			throw new NotFoundException("Accounts not found");
 		}
 
