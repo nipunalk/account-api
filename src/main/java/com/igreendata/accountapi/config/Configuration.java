@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 
 @org.springframework.context.annotation.Configuration
-
+//test
 public class Configuration {
 	 private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 
